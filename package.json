@@ -1,0 +1,8 @@
+{
+    "name": "watermark",
+    "description": "A plugin to automatically watermark uploaded images",
+    "author": "UTurista",
+    "license": "MIT",
+    "version": "1.0.0",
+    "type": "kirby-plugin"
+  }
