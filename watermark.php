@@ -49,12 +49,12 @@ function watermarkImage($file)
             return;
 
         // Check if the image is wide enought to support the number of wanted columns, else reduce the number of it
-        $collumns = c::get('watermark.collumns', 1);
-        $tileWidth = imagesx($image) / $collumns;
+        $columns = c::get('watermark.columns', 1);
+        $tileWidth = imagesx($image) / $columns;
         while( $watermarkWidth > $tileWidth )
         {
-            $collumns--;
-            $tileWidth = imagesx($image) / $collumns;
+            $columns--;
+            $tileWidth = imagesx($image) / $columns;
         }
 
         // Check if the image is tall enought to support the number of wanted rows, else reduce the number of it
@@ -70,7 +70,7 @@ function watermarkImage($file)
         $markOpacity = c::get('watermark.opacity', 30);
 
         // Iterate thru all tiles and insert the watermarks
-        for($c = 0 ; $c < $collumns; $c++)
+        for($c = 0 ; $c < $columns; $c++)
         {
             for($r = 0; $r < $rows; $r++)
             {
