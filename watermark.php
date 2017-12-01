@@ -40,9 +40,12 @@ function watermarkImage($file)
         if(!isset($image))
             return; 
         
+        // Should we crop the watermark in case it's bigger than the image itself?
+        $cropIt = c::get('watermark.crop', false);
+        
         // Get the watermark size
-        $watermarkWidth = imagesx($watermark);
-        $watermarkHeight = imagesy($watermark);
+        $watermarkWidth = $cropIt ? min( imagesx($watermark), imagesx($image)) : imagesx($watermark);
+        $watermarkHeight = $cropIt ? min( imagesy($watermark), imagesy($image)) : imagesy($watermark);
 
         // Only true when we shouldn't crop and watermark is bigger than image itself
         if( $watermarkWidth > imagesx($image) || $watermarkHeight > imagesy($image) ) 
