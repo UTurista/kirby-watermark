@@ -3,15 +3,19 @@ if(!extension_loaded('gd')) return;
     
 kirby()->hook('panel.file.upload', 'watermarkImage');
 
-function watermarkImage($file) {
-    try {
+function watermarkImage($file)
+{
+    try
+    {
         // Check if we should ignore or not this upload
         $page = $file->page();
         
-        $lang = (site()->defaultLanguage())? site()->defaultLanguage()->code : null;
+        $lang = site()->defaultLanguage() ? site()->defaultLanguage()->code : null;
     
-        foreach(c::get('watermark.ignore', array()) as $pattern) {
-            if(fnmatch($pattern, $page->uri($lang)) === true) {
+        foreach(c::get('watermark.ignore', array()) as $pattern)
+        {
+            if(fnmatch($pattern, $page->uri($lang)) === true)
+            {
                 return;
             }
         }
@@ -68,7 +72,9 @@ function watermarkImage($file) {
         imagedestroy($image);
         imagedestroy($watermark);
 
-    } catch (Exception $e) {
+    }
+    catch (Exception $e)
+    {
         return response::error($e->getMessage());
     }
 }
@@ -118,7 +124,8 @@ function saveResource($file, $resource)
 * 08-JAN-2011
 *
 **/
-function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct){
+function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct)
+{
     // creating a cut resource
     $cut = imagecreatetruecolor($src_w, $src_h);
 
