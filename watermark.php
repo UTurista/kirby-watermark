@@ -40,18 +40,31 @@ function watermarkImage($file)
         if(!isset($image))
             return; 
         
-        // Get the number of rows/collumns
-        $collumns = c::get('watermark.collumns', 1);
-        $rows = c::get('watermark.rows', 1);
-
-        // Verify that the watermark is actually smaller then the tile
+        // Get the watermark size
         $watermarkWidth = imagesx($watermark);
         $watermarkHeight = imagesy($watermark);
-        $tileWidth = imagesx($image) / $collumns;
-        $tileHeight =imagesy($image) / $rows;
 
-        if( $watermarkWidth > $tileWidth || $watermarkHeight > $tileHeight)
+        // Only true when we shouldn't crop and watermark is bigger than image itself
+        if( $watermarkWidth > imagesx($image) || $watermarkHeight > imagesy($image) ) 
             return;
+
+        // Check if the image is wide enought to support the number of wanted columns, else reduce the number of it
+        $collumns = c::get('watermark.collumns', 1);
+        $tileWidth = imagesx($image) / $collumns;
+        while( $watermarkWidth > $tileWidth )
+        {
+            $collumns--;
+            $tileWidth = imagesx($image) / $collumns;
+        }
+
+        // Check if the image is tall enought to support the number of wanted rows, else reduce the number of it
+        $rows = c::get('watermark.rows', 1);
+        $tileHeight = imagesy($image) / $rows ;
+        while( $watermarkHeight > $tileHeight )
+        {
+            $rows--;
+            $tileHeight = imagesy($image) / $rows;
+        }
 
         // Get the watermark opacity
         $markOpacity = c::get('watermark.opacity', 30);
